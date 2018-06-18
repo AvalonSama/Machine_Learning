@@ -12,11 +12,6 @@ def LoadDataSet():
     return dataMat, labelMat;
 
 
-def test1():
-    return 1;
-
-
-
 def Sigmoid(x):
     temp = exp(-x);
     cnt=0;
