@@ -181,7 +181,14 @@ def DBSCAN(texts_v, R, n):
                 
 if __name__=='__main__':
     word_bag,texts = LoadDataSet();
-    texts_v = Vectorlize(word_bag, texts); 
-    Clist = DBSCAN(texts_v,2.1,3);
-    print(Clist);
+    texts_v = Vectorlize(word_bag, texts);
+    type = input("请选择聚类方式：1.kmeans       2.DBSCAN \n");
+    if type == "1":
+        C1,C2,C3 = Kmeans(texts_v);
+        print(C1);
+        print(C2);
+        print(C3);
+    else:
+        Clist = DBSCAN(texts_v,2.1,3);
+        print(Clist);
     
