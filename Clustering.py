@@ -1,4 +1,5 @@
 from numpy import *
+import queue;
 
 def LoadDataSet():
     word_bag = [];
@@ -7,7 +8,7 @@ def LoadDataSet():
     for line in fr.readlines():
         lineArr = line.strip().split();
         word_bag = lineArr;
-    fr = open('C:/Users/92469/Desktop/text.txt')
+    fr = open('C:/Users/92469/Desktop/data.txt')
     for line in fr.readlines():
         lineArr = line.strip().split();
         text.append(lineArr);
@@ -47,9 +48,9 @@ def Kmeans(texts_v):
     C1 = [];
     C2 = [];
     C3 = [];
-    C1_center = texts_v[0][1:];
+    C1_center = texts_v[1][1:];
     C2_center = texts_v[4][1:];
-    C3_center = texts_v[7][1:];
+    C3_center = texts_v[6][1:];
 
     flag = False;
     while flag == False:
@@ -143,46 +144,41 @@ def Dis(a,b):
     temp = sqrt(float(temp));
     return float(temp);
 
+def Count(n, texts_v, R):
+    res = [];
+    for i in range(0,len(texts_v)):
+        if R > Dis(texts_v[i],texts_v[n]):
+            res.append(i);
+    return res;
+
 def DBSCAN(texts_v, R, n):
     Clist = [];
     Cnoise = [];
     tag = [];
     for i in range(0,len(texts_v)):
-        tag[i] = False;
+        tag.append(False);
     for i in range(0,len(texts_v)):
         if tag[i] == False:
             temp = [];
-            for j in range(0,len(texts_v)):
-                if tag[j]==False:
-                    d = Dis(texts_v[i],texts_v[j]);
-                    if d<R:
-                        temp.append(j);
-            if(len(temp)<n):
+            temp = Count(i,texts_v,R);
+            if len(temp)<n:
                 Cnoise.append(i);
             else:
-                C = [];
-                C.append(i);
+                C=[];
                 for j in temp:
-                    count = [];
-                    for k in len(texts_v):
-                        if Dis(texts_v[j],texts_v[k])<R and k!=i:
-                            count.append(k);
-                    if len(count)<n:
-                        Cnoise.append(j);
-                    else:
-                        for k in count:
-                            C.append(k);
-                            tag[k]=True;
+                    k = Count(j,texts_v,R);
+                    if len(k) > n:
+                        for t in k:
+                            if temp.count(t) == 0:
+                                temp.append(t);
+                    if tag[j] == False:
+                        C.append(j);
+                        tag[j] = True;
+                Clist.append(C);
         tag[i] = True;
-        Clist.append(Cnoise);
+    Clist.append(Cnoise);
     return Clist;
-                    
-
-
-
-
-
-
+                
 if __name__=='__main__':
     word_bag,texts = LoadDataSet();
     texts_v = Vectorlize(word_bag, texts); 
