@@ -61,11 +61,11 @@ def Kmeans(texts_v):
             d1 = EU(C1_center,text);
             d2 = EU(C2_center,text);
             d3 = EU(C3_center,text);
-            if d1<d2 and d1<d3:
+            if d1<=d2 and d1<=d3:
                 C1.append(text);
-            elif d2<d1 and d2<d3:
+            elif d2<=d1 and d2<=d3:
                 C2.append(text);
-            elif d3<d1 and d3<d2:
+            elif d3<=d1 and d3<=d2:
                 C3.append(text);
         C1_center_before = C1_center;
         C2_center_before = C2_center;
@@ -75,7 +75,20 @@ def Kmeans(texts_v):
         C3_center = GetCenter(C3);
         if C1_center_before==C1_center and C2_center_before==C2_center and C3_center==C3_center_before:
             flag = True;
-    return C1,C2,C3;
+
+    temp1 = [];
+    temp2 = [];
+    temp3 = [];
+
+    for t in C1:
+        temp1.append(t[0]);
+    for t in C2:
+        temp2.append(t[0]);
+    for t in C3:
+        temp3.append(t[0]);
+
+    
+    return temp1,temp2,temp3;
 
 def D(a,b):
     return 0;
@@ -190,5 +203,6 @@ if __name__=='__main__':
         print(C3);
     else:
         Clist = DBSCAN(texts_v,2.1,3);
+        print("文本编号从 0 开始")
         print(Clist);
     
