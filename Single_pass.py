@@ -1,5 +1,4 @@
 from numpy import *;
-
 def LoadDataSet():
     word_bag = [];
     text=[];
@@ -68,10 +67,14 @@ def Single_pass(texts_v,T):
         else:
             Cl[flag].append(texts_v[i]);
             print("加入到簇 %d "%(flag+1));
+    for c in range(0,len(Cl)):
+        for t in range(0,len(Cl[c])):
+            Cl[c][t] = Cl[c][t][0];
     return Cl;
 
 if __name__=="__main__":
     word_bag,text = LoadDataSet();
     texts_v = Vectorlize(word_bag, text);
     Cl = Single_pass(texts_v,-2.35);
+    print("最终结果");
     print(Cl);
